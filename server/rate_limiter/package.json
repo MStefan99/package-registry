@@ -1,0 +1,11 @@
+{
+  "name": "rate-limiter",
+  "version": "1.0.0",
+  "main": "index.js",
+  "description": "Express middleware for rate limiting requests based on your needs",
+  "author": "MStefan99",
+  "license": "MIT",
+  "publishConfig": {
+    "registry": "http://verdaccio.localhost/"
+  }
+}

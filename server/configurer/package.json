@@ -1,0 +1,11 @@
+{
+  "name": "configurer",
+  "version": "1.0.0",
+  "main": "index.js",
+  "description": "Saving and reading your app config has never been so easy",
+  "author": "MStefan99",
+  "license": "MIT",
+  "publishConfig": {
+    "registry": "http://verdaccio.localhost/"
+  }
+}

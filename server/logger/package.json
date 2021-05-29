@@ -1,0 +1,11 @@
+{
+  "name": "logger",
+  "version": "1.0.0",
+  "main": "index.js",
+  "description": "An easy way to log anything... forever",
+  "author": "MStefan99",
+  "license": "MIT",
+  "publishConfig": {
+    "registry": "http://verdaccio.localhost/"
+  }
+}

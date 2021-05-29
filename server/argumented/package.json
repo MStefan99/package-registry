@@ -1,0 +1,11 @@
+{
+  "name": "argumented",
+  "version": "1.0.0",
+  "main": "index.js",
+  "description": "Argumented - manage CLI arguments with ease!",
+  "author": "MStefan99",
+  "license": "MIT",
+  "publishConfig": {
+    "registry": "http://verdaccio.localhost/"
+  }
+}

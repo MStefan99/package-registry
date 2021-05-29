@@ -1,0 +1,11 @@
+{
+  "name": "jui",
+  "version": "1.0.0",
+  "main": "index.js",
+  "description": "Jui - a JavaScript UI you always wanted",
+  "author": "MStefan99",
+  "license": "MIT",
+  "publishConfig": {
+    "registry": "http://verdaccio.localhost/"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "name": "flash-http",
+  "version": "1.0.0",
+  "main": "index.js",
+  "description": "Show one-time banners on your webpage",
+  "author": "MStefan99",
+  "license": "MIT",
+  "publishConfig": {
+    "registry": "http://verdaccio.localhost/"
+  }
+}
