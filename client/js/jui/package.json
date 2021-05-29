@@ -1,7 +1,7 @@
 {
   "name": "jui",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "jui.js",
   "description": "Jui - a JavaScript UI you always wanted",
   "author": "MStefan99",
   "license": "MIT",

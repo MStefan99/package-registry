@@ -1,8 +1,8 @@
 {
-  "name": "argumented",
+  "name": "express-flash",
   "version": "1.0.0",
   "main": "index.js",
-  "description": "Argumented - manage CLI arguments with ease!",
+  "description": "Show one-time banners on your webpage",
   "author": "MStefan99",
   "license": "MIT",
   "publishConfig": {

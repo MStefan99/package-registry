@@ -1,20 +1,3 @@
-// Shared library by MStefan99
-
-
-/* Usage:
- *
- * const config = configurer('./your_config_file.json');
- *
- * You can change the file path using config.filePath = './other_file.json'.
- * Set the default options using config.defaults = {...};
- * If the property is not present in the object on save, its default value will be taken from the defaults.
- *
- * Use config.load() to load values from file. They will be stored inside the config object itself.
- * Use config.save() to save values to file.
- *
- * Use the config object just like any other object: you can read and write all others properties as usual.
- */
-
 'use strict';
 
 const path = require('path');
