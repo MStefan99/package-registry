@@ -1,5 +1,5 @@
 {
-  "name": "configurer",
+  "name": "@mstefan99/configurer",
   "version": "1.0.0",
   "main": "index.js",
   "description": "Saving and reading your app config has never been so easy",

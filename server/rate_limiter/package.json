@@ -1,5 +1,5 @@
 {
-  "name": "rate-limiter",
+  "name": "@mstefan99/rate-limiter",
   "version": "1.0.0",
   "main": "index.js",
   "description": "Express middleware for rate limiting requests based on your needs",

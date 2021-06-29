@@ -1,5 +1,5 @@
 {
-  "name": "argumented",
+  "name": "@mstefan99/argumented",
   "version": "1.0.0",
   "main": "index.js",
   "description": "Argumented - manage CLI arguments with ease!",

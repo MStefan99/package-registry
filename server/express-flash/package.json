@@ -1,5 +1,5 @@
 {
-  "name": "express-flash",
+  "name": "@mstefan99/express-flash",
   "version": "1.0.0",
   "main": "index.js",
   "description": "Show one-time banners on your webpage",

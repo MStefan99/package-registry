@@ -1,5 +1,5 @@
 {
-  "name": "logger",
+  "name": "@mstefan99/logger",
   "version": "2.0.0",
   "main": "index.js",
   "description": "An easy way to log anything... forever",
