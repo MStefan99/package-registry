@@ -6,6 +6,6 @@
   "author": "MStefan99",
   "license": "MIT",
   "publishConfig": {
-    "registry": "http://verdaccio.localhost/"
+    "registry": "http://verdaccio.local/"
   }
 }
