@@ -1,0 +1,15 @@
+{
+	"something": "data",
+	"data": {
+		"array": [
+			1,
+			2,
+			3
+		]
+	},
+	"test": {
+		"number": 14,
+		"string": "test",
+		"bool": true
+	}
+}

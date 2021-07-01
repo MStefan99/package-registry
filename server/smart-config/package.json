@@ -1,0 +1,14 @@
+{
+	"name": "@mstefan99/smart-config",
+	"version": "1.0.0",
+	"main": "index.js",
+	"description": "A config file... but smart!",
+	"author": "MStefan99",
+	"license": "MIT",
+	"dependencies": {
+		"@mstefan99/configurer": "^1.0.0"
+	},
+	"publishConfig": {
+		"registry": "http://verdaccio.local/"
+	}
+}
