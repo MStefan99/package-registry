@@ -6,31 +6,29 @@ const configurer = require('@mstefan99/configurer');
 module.exports = function (filePath, readInterval = 30) {
 	return new Promise(resolve => {
 		configurer(filePath).load().then(config => {
-			function getProxy(rootObj) {
-				return {
+				const proxy = {
 					get: function (target, prop, receiver) {
 						if (typeof target[prop] === 'object') {
 							return new Proxy(Reflect.get(target, prop, receiver),
-								getProxy(rootObj));
+								proxy);
 						} else {
 							return Reflect.get(target, prop, receiver);
 						}
 					},
 					set: function (target, prop, value, receiver) {
 						Reflect.set(target, prop, value, receiver);
-						rootObj.save();
+						config.save();
 						return true;
 					}
 				};
-			}
 
-			const autoConfig = new Proxy(config, getProxy(config));
+			const smartConfig = new Proxy(config, proxy);
 
 			setInterval(() => {
-				autoConfig.load();
+				smartConfig.load();
 			}, readInterval * 1000).unref();
 
-			resolve(autoConfig);
+			resolve(smartConfig);
 		});
 	});
 };

@@ -3,7 +3,16 @@
 const smartConfig = require('../index');
 
 
-smartConfig().then(config => {
+// Solution for linking different configs together
+let promise = new Promise(resolve => {
+	smartConfig().then(c => {
+		resolve(c);
+	})
+});
+
+
+
+promise.then(config => {
 	config.something = 'data';
 	config.data = {array: []};
 	config.data.array = [1, 2, 3];
@@ -18,16 +27,22 @@ smartConfig().then(config => {
 	}
 
 	console.log(config);
-
-	setTimeout(() => {
-		++config.test.number;
-		console.log('config updated');
-	}, 3000);
+	++config.test.number;
+	console.log(config);
+	promise.then(c => console.log(config === c));
+	// Configs are all updated at the same time!
 });
 
 
-smartConfig().then(config => {
+promise.then(config => {
 	setTimeout(() => {
 		console.log(config);
-	}, 7000);
+	}, 1000);
+});
+
+
+promise.then(config => {
+	setTimeout(() => {
+		console.log(config);
+	}, 3000);
 });
