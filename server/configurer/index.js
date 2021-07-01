@@ -31,8 +31,8 @@ module.exports = function (filePath = './config.json') {
 			if (configReadable === null) {
 				fs.access(path.resolve(configObject.filePath),
 					fs.constants.R_OK, err => {
-					resolve(configReadable = !err);
-				});
+						resolve(configReadable = !err);
+					});
 			} else {
 				resolve(configReadable);
 			}
@@ -45,8 +45,8 @@ module.exports = function (filePath = './config.json') {
 			if (configWritable === null) {
 				fs.access(path.resolve(configObject.filePath),
 					fs.constants.W_OK, err => {
-					resolve(configWritable = !err);
-				});
+						resolve(configWritable = !err);
+					});
 			} else {
 				resolve(configWritable);
 			}
@@ -59,8 +59,8 @@ module.exports = function (filePath = './config.json') {
 			if (directoryWritable === null) {
 				fs.access(path.dirname(path.resolve(configObject.filePath)),
 					fs.constants.W_OK, err => {
-					resolve(directoryWritable = !err);
-				});
+						resolve(directoryWritable = !err);
+					});
 			} else {
 				resolve(directoryWritable);
 			}
@@ -76,7 +76,9 @@ module.exports = function (filePath = './config.json') {
 						resolve(Object.assign(configObject, configObject.defaults, JSON.parse(data)));
 					});
 				} else {
-					reject('Config not readable');
+					save()
+						.then(() => resolve(configObject))
+						.catch(err => reject(err));
 				}
 			});
 		});
