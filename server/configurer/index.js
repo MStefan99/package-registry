@@ -8,6 +8,7 @@ module.exports = function (filePath = './config.json') {
 	let configReadable = null;
 	let configWritable = null;
 	let directoryWritable = null;
+	let writePromise = Promise.resolve();
 
 	let configObject = {};
 	Object.defineProperty(configObject, 'defaults', {
@@ -22,7 +23,7 @@ module.exports = function (filePath = './config.json') {
 		value: load
 	});
 	Object.defineProperty(configObject, 'save', {
-		value: save
+		value: queue
 	});
 
 
@@ -76,7 +77,7 @@ module.exports = function (filePath = './config.json') {
 						resolve(Object.assign(configObject, configObject.defaults, JSON.parse(data)));
 					});
 				} else {
-					save()
+					queue()
 						.then(() => resolve(configObject))
 						.catch(err => reject(err));
 				}
@@ -85,7 +86,13 @@ module.exports = function (filePath = './config.json') {
 	}
 
 
-	function save() {
+	function queue() {
+		writePromise = writePromise.then(() => write());
+		return writePromise;
+	}
+
+
+	function write() {
 		return new Promise((resolve, reject) => {
 			isWritable().then(writable => {
 				if (writable) {
@@ -93,6 +100,8 @@ module.exports = function (filePath = './config.json') {
 						JSON.stringify(configObject, null, '\t'), 'utf8', err => {
 							if (err) {
 								reject('Failed to write config');
+							} else {
+								resolve();
 							}
 						});
 				} else {
