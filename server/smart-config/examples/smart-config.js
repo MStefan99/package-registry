@@ -14,8 +14,10 @@ let promise = new Promise(resolve => {
 
 promise.then(config => {
 	config.something = 'data';
-	config.data = {array: []};
-	config.data.array = [1, 2, 3];
+	if (!config.data) {
+		config.data = {array: []};
+		config.data.array = [1, 2, 3];
+	}
 
 	if (config.test === undefined) {
 		config.test = {
@@ -44,5 +46,8 @@ promise.then(config => {
 promise.then(config => {
 	setTimeout(() => {
 		console.log(config);
+		config.data.array.push(4);
+		console.log(JSON.stringify(config, null, 2));
+		config.load();
 	}, 3000);
 });

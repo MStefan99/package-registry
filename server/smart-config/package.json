@@ -1,6 +1,6 @@
 {
 	"name": "@mstefan99/smart-config",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"main": "index.js",
 	"description": "A config file... but smart!",
 	"author": "MStefan99",
