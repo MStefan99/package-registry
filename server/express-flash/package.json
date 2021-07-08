@@ -4,8 +4,5 @@
   "main": "index.js",
   "description": "Show one-time banners on your webpage",
   "author": "MStefan99",
-  "license": "MIT",
-  "publishConfig": {
-    "registry": "http://verdaccio.local/"
-  }
+  "license": "MIT"
 }

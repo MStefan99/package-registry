@@ -3,8 +3,5 @@
   "version": "1.0.0",
   "description": "A bad Bootstrap ripoff",
   "author": "MStefan99",
-  "license": "MIT",
-  "publishConfig": {
-    "registry": "http://verdaccio.local/"
-  }
+  "license": "MIT"
 }

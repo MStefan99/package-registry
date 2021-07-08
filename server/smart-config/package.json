@@ -7,8 +7,5 @@
 	"license": "MIT",
 	"dependencies": {
 		"@mstefan99/configurer": "^1.0.0"
-	},
-	"publishConfig": {
-		"registry": "http://verdaccio.local/"
 	}
 }

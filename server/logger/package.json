@@ -4,8 +4,5 @@
   "main": "index.js",
   "description": "An easy way to log anything... forever",
   "author": "MStefan99",
-  "license": "MIT",
-  "publishConfig": {
-    "registry": "http://verdaccio.local/"
-  }
+  "license": "MIT"
 }
