@@ -47,7 +47,6 @@ promise.then(config => {
 	setTimeout(() => {
 		console.log(config);
 		config.data.array.push(4);
-		console.log(JSON.stringify(config, null, 2));
-		config.load();
+		console.log(config);
 	}, 3000);
 });

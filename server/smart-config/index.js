@@ -23,6 +23,11 @@ module.exports = function (filePath, readInterval = 30) {
 					Reflect.set(target, prop, value, receiver);
 					config.save();
 					return true;
+				},
+				deleteProperty(target, prop) {
+					Reflect.deleteProperty(target, prop);
+					config.save();
+					return true;
 				}
 			};
 
