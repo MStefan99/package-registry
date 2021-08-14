@@ -66,12 +66,15 @@ function has(args) {
 }
 
 
-function parse() {
+function parse(argv = process.argv.slice(2)) {
+	if (argv === process.argv) {
+		argv = process.argv.slice(2);
+	}
+
 	const args = {
 		positional: []
 	};
 
-	const argv = process.argv.slice(2);
 	for (let i = 0; i < argv.length; ++i) {
 		const entry = argEntries.find(e => e.args.includes(argv[i]));
 		if (entry) {
