@@ -3,6 +3,7 @@
 const argEntries = [];
 const helpArgs = ['-h', '--help'];
 const name = process.argv[1].match(/[^<>:"/\\|?*]+$/)[0];
+const positionalArgEntries = [];
 let desc = '';
 
 
@@ -23,7 +24,7 @@ function makeEntry(name, args, params, desc, required = false) {
 
 function printHelpPage() {
 	let invocation = '';
-	let paramDesc = '';
+	let paramDesc = '\tNamed arguments:\n';
 
 	for (const entry of argEntries) {
 		invocation += ' [' + entry.args.join('/') + (entry.params? ' ' + entry.params.join(' ') : '') + ']';
@@ -32,10 +33,19 @@ function printHelpPage() {
 			'\t' + entry.desc + '\n';
 	}
 
+	paramDesc += '\n\tPositional arguments:\n';
+
+	for (const entry of positionalArgEntries) {
+		invocation += ' [' + entry.name + ']';
+
+		paramDesc += '\t' + entry.name + '\t' + entry.desc + '\n';
+	}
+
+
 	console.log(desc + '\n\n' +
 		'Usage:\n' +
 		'\tnode ./' + name + invocation + '\n\n' +
-		'Options:\n' +
+		'Arguments:\n' +
 		paramDesc);
 	process.exit();
 }
@@ -43,6 +53,11 @@ function printHelpPage() {
 
 function description(description) {
 	desc = description;
+}
+
+
+function positionalDesc(name, description) {
+	positionalArgEntries.push({name, desc: description});
 }
 
 
@@ -102,6 +117,7 @@ function parse(argv = process.argv.slice(2)) {
 
 module.exports = {
 	description,
+	positionalDesc,
 	add,
 	parse
 };
