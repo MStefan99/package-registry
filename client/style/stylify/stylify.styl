@@ -32,9 +32,18 @@ negate(unit)
 		unit
 
 
+getPrefix(value)
+	if value != ''
+		value + \-
+	else
+		''
+
+
 getPostfix(value)
 	if value != ''
 		\- + value
+	else
+		''
 
 
 getSize(size)
@@ -108,7 +117,7 @@ html
 				&.alert-{clr}
 					background lighten(color- + clr, 80%)
 					color darken(color- + clr, 30%)
-					border 1.2px solid lighten(color- + clr, 70%)
+					border 1px solid lighten(color- + clr, 70%)
 
 		.jumbotron
 			padding 2em
@@ -124,6 +133,11 @@ html
 		.light
 			font-weight normal
 
+		.text-decoration-none
+			text-decoration none
+
+		// Interactions
+
 		.user-select-none
 			user-select none
 
@@ -132,6 +146,19 @@ html
 
 		.user-select-auto
 			user-select auto
+
+		.pe-none
+			pointer-events none
+
+		.pe-all
+			pointer-events all
+
+		.pe-auto
+			pointer-events auto
+
+		for c in auto default none help pointer progress wait move not-allowed grab grabbing
+			.cursor-{c}
+				cursor c
 
 		// Containers
 
@@ -151,86 +178,76 @@ html
 		// Dimensions
 
 		for size in 25 50 75 100
-			.w-{size}
-				width size + '%'
+			for limit in '' 'min' 'max'
+				.{getPrefix(limit)}w-{size}
+					{getPrefix(limit)}width size + '%'
 
-			.mw-{size}
-				max-width size + '%'
+				.{getPrefix(limit)}h-{size}
+					{getPrefix(limit)}height size + '%'
 
-			.min-vw-{size}
-				min-width size vw
+				.{getPrefix(limit)}vw-{size}
+					{getPrefix(limit)}width size vw
 
-			.vw-{size}
-				max-width size vw
-
-			.h-{size}
-				height size + '%'
-
-			.mh-{size}
-				max-height size + '%'
-
-			.min-vh-{size}
-				min-height size vh
-
-			.vh-{size}
-				max-height size vh
+				.{getPrefix(limit)}vh-{size}
+					{getPrefix(limit)}height size vh
 
 		// Spacing
 
 		for size in sizes
 			+media(size)
-				for side in '' 't' 'b' 'l' 'r' 'x' 'y'
-					for spacing in '0' '1' '2' '3' '4' '5' 'auto'
-						for type in 'm' 'p'
-							if type == 'm'
-								spacingType = margin
-							else if type == 'p'
-								spacingType = padding
+				for spacing in '0' '1' '2' '3' '4' '5' 'auto'
+					for type in 'm' 'p'
+						if type == 'm'
+							spacingType = margin
+						else if type == 'p'
+							spacingType = padding
 
-							if side == 't'
-								spacingSide = top
-							else if side == 'b'
-								spacingSide = bottom
-							else if side == 'l'
-								spacingSide = left
-							else if side == 'r'
-								spacingSide = right
-							else if side == 'x'
-								spacingSide = left right
-							else if side == 'y'
-								spacingSide = top bottom
-							else if !side
+						if spacing == '0'
+							spacingSpace = 0
+						else if spacing == '1'
+							spacingSpace = spacer * .25
+						else if spacing == '2'
+							spacingSpace = spacer * .5
+						else if spacing == '3'
+							spacingSpace = spacer
+						else if spacing == '4'
+							spacingSpace = spacer * 1.5
+						else if spacing == '5'
+							spacingSpace = spacer * 3
+						else if spacing == 'auto'
+							spacingSpace = auto
+
+						for side in 'left' 'top' 'right' 'bottom'
+							if !side
 								spacingSide = ''
+							else if side == 'left'
+								spacingSide = 'l' 'x' ''
+							else if side == 'top'
+								spacingSide = 't' 'y' ''
+							else if side == 'right'
+								spacingSide = 'r' 'x' ''
+							else if side == 'bottom'
+								spacingSide = 'b' 'y' ''
 
-							if spacing == '0'
-								spacingSpace = 0
-							else if spacing == '1'
-								spacingSpace = spacer * .25
-							else if spacing == '2'
-								spacingSpace = spacer * .5
-							else if spacing == '3'
-								spacingSpace = spacer
-							else if spacing == '4'
-								spacingSpace = spacer * 1.5
-							else if spacing == '5'
-								spacingSpace = spacer * 3
-							else if spacing == 'auto'
-								spacingSpace = auto
+							classes = ''
+							for s in spacingSide
+								classes += '.' + type + s + getPostfix(size) + '-' + spacing
+								if s != ''
+									classes += ','
 
-							.{type}{side}{getPostfix(size)}-{spacing}
-								for s in spacingSide
-									if spacingSide
-										{spacingType}-{s} spacingSpace
-									else
-										{spacingType} spacingSpace
+							if spacing != 'auto' or type == 'm'
+								{classes}
+									{spacingType}{getPostfix(side)} spacingSpace
 
-						if spacing != 'auto' and spacing != '0'
-							.m{side}{getPostfix(size)}-n{spacing}
-								for s in spacingSide
-									if spacingSide
-										margin-{s} negate(spacingSpace)
-									else
-										margin negate(spacingSpace)
+							classes = ''
+							for s in spacingSide
+								classes += '.' + type + s + getPostfix(size) + '-n' + spacing
+								if s != ''
+									classes += ','
+
+							if spacing != 'auto' and spacing != '0' and type == 'm'
+								{classes}
+									{spacingType}{getPostfix(side)} negate(spacingSpace)
 
 		// Grid
 
@@ -275,6 +292,14 @@ html
 				for display in displays
 					.d{getPostfix(size)}-{display}
 						display unquote(display) !important
+
+		// Position
+
+		for size in sizes
+			+media(size)
+				for pos in 'static' 'relative' 'absolute' 'fixed' 'sticky'
+					.position{getPostfix(size)}-{pos}
+						position unquote(pos)
 
 		// Flex
 
@@ -467,7 +492,7 @@ html
 					margin-left 0
 
 				&[type=email], &[type=password], &[type=number]
-				&[type=search], &[type=text], &[type=email],
+				&[type=search], &[type=text], &[type=email]
 					display block
 					width 100%
 					padding .7em
