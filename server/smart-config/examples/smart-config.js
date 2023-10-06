@@ -1,11 +1,19 @@
 'use strict';
 
-const smartConfig = require('../index');
+const SmartConfig = require('../index');
 
 
 // Solution for linking different configs together
 let promise = new Promise(resolve => {
-	smartConfig().then(c => {
+	const config = new SmartConfig();
+	config.defaults = {
+		arr: [],
+		null: null
+	}
+
+	config.then(c => {
+		console.log('config', config);
+
 		resolve(c);
 	})
 });

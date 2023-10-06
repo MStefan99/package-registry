@@ -1,128 +1,53 @@
 'use strict';
 
 const path = require('path');
-const fs = require('fs');
+const fs = require('fs').promises;
 
+class Config {
+	_filePath;
+	_defaults;
+	_promise = Promise.resolve();
 
-module.exports = function (filePath = './config.json') {
-	let configReadable = null;
-	let configWritable = null;
-	let directoryWritable = null;
-	let writePromise = Promise.resolve();
+	constructor(filePath = path.join(__dirname, 'config.json'), defaults = {}) {
+		this._filePath = filePath;
+		this.defaults = defaults;
+	}
 
-	let configObject = {};
-	Object.defineProperty(configObject, 'defaults', {
-		writable: true,
-		value: {}
-	});
-	Object.defineProperty(configObject, 'filePath', {
-		writable: true,
-		value: filePath
-	});
-	Object.defineProperty(configObject, 'load', {
-		value: load
-	});
-	Object.defineProperty(configObject, 'save', {
-		value: queue
-	});
-
-
-	function isReadable() {
-		return new Promise(resolve => {
-			if (configReadable === null) {
-				fs.access(path.resolve(configObject.filePath),
-					fs.constants.R_OK, err => {
-						resolve(configReadable = !err);
-					});
-			} else {
-				resolve(configReadable);
+	set defaults(d) {
+		this._defaults = structuredClone(Object.assign({}, d));
+		for (const prop in this._defaults) {
+			if (!this[prop]) {
+				this[prop] = this._defaults[prop];
 			}
-		});
+		}
 	}
 
+	get defaults() {
+		return structuredClone(this._defaults);
+	}
 
-	function isWritable() {
-		return new Promise(resolve => {
-			if (configWritable === null) {
-				fs.access(path.resolve(configObject.filePath),
-					fs.constants.W_OK, err => {
-						resolve(configWritable = !err);
-					});
-			} else {
-				resolve(configWritable);
+	async _load() {
+		try {
+			const data = await fs.readFile(path.resolve(this._filePath), 'utf8');
+			return Object.assign(this, JSON.parse(data));
+		} catch (e) {
+			if (e.errno === -2) {
+				await this._save();
 			}
-		});
+			return this;
+		}
 	}
 
+	async _save() {
+		const result = Object.assign({}, this, this.defaults, this);
+		delete (result._filePath);
+		delete (result._promise);
 
-	function isDirectoryWritable() {
-		return new Promise(resolve => {
-			if (directoryWritable === null) {
-				fs.access(path.dirname(path.resolve(configObject.filePath)),
-					fs.constants.W_OK, err => {
-						resolve(directoryWritable = !err);
-					});
-			} else {
-				resolve(directoryWritable);
-			}
-		});
+		await this._promise;
+		this._promise = fs.writeFile(path.resolve(this._filePath), JSON.stringify(result, null, '\t'), 'utf8');
+		await this._promise;
 	}
+}
 
 
-	function load() {
-		return new Promise((resolve, reject) => {
-			isReadable().then(readable => {
-				if (readable) {
-					fs.readFile(path.resolve(configObject.filePath), 'utf8', (err, data) => {
-						resolve(Object.assign(configObject, configObject.defaults, JSON.parse(data)));
-					});
-				} else {
-					queue()
-						.then(() => resolve(configObject))
-						.catch(err => reject(err));
-				}
-			});
-		});
-	}
-
-
-	function queue() {
-		writePromise = writePromise.then(() => write());
-		return writePromise;
-	}
-
-
-	function write() {
-		return new Promise((resolve, reject) => {
-			isWritable().then(writable => {
-				if (writable) {
-					fs.writeFile(path.resolve(configObject.filePath),
-						JSON.stringify(configObject, null, '\t'), 'utf8', err => {
-							if (err) {
-								reject('Failed to write config');
-							} else {
-								resolve();
-							}
-						});
-				} else {
-					isDirectoryWritable().then(writable => {
-						if (writable) {
-							fs.writeFile(path.resolve(configObject.filePath),
-								JSON.stringify(configObject, null, '\t'), 'utf8', err => {
-									if (err) {
-										reject('Failed to create config');
-									} else {
-										resolve();
-									}
-								});
-						} else {
-							reject('Config directory not writable');
-						}
-					});
-				}
-			});
-		});
-	}
-
-	return configObject;
-};
+module.exports = Config;
